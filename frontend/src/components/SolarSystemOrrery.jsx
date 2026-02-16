@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 
 const PLANETS = [
-  { name: "Mercury", color: "#b5b5b5", size: 32, orbitRadius: 10 },
-  { name: "Venus", color: "#e8cda0", size: 36, orbitRadius: 18 },
-  { name: "Earth", color: "#4da6ff", size: 38, orbitRadius: 26 },
-  { name: "Mars", color: "#e07a5f", size: 33, orbitRadius: 34 },
-  { name: "Jupiter", color: "#d4a56a", size: 56, orbitRadius: 44 },
-  { name: "Saturn", color: "#e8d5a3", size: 50, orbitRadius: 54 },
-  { name: "Uranus", color: "#7ec8e3", size: 42, orbitRadius: 64 },
-  { name: "Neptune", color: "#4a6fa5", size: 42, orbitRadius: 74 },
+  { name: "Mercury", color: "#b5b5b5", size: 32, orbitRadius: 16 },
+  { name: "Venus", color: "#e8cda0", size: 36, orbitRadius: 26 },
+  { name: "Earth", color: "#4da6ff", size: 38, orbitRadius: 38 },
+  { name: "Mars", color: "#e07a5f", size: 33, orbitRadius: 50 },
+  { name: "Jupiter", color: "#d4a56a", size: 56, orbitRadius: 64 },
+  { name: "Saturn", color: "#e8d5a3", size: 50, orbitRadius: 78 },
+  { name: "Uranus", color: "#7ec8e3", size: 42, orbitRadius: 92 },
+  { name: "Neptune", color: "#4a6fa5", size: 42, orbitRadius: 106 },
 ];
 
 const SolarSystemOrrery = () => {
