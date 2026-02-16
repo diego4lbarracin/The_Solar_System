@@ -64,6 +64,36 @@ router.get("/travel", async (req, res) => {
   }
 });
 
+// GET /api/planets/:name/image — Fetch only the image of a planet by name
+router.get("/:name/image", async (req, res) => {
+  try {
+    const name =
+      req.params.name.charAt(0).toUpperCase() +
+      req.params.name.slice(1).toLowerCase();
+    const db = await connectToDatabase();
+    const collection = db.collection(process.env.COLLECTION_NAME);
+    const planet = await collection.findOne(
+      { name },
+      { projection: { image_url: 1, name: 1, _id: 0 } },
+    );
+
+    if (!planet) {
+      return res.status(404).json({ error: `Planet '${name}' not found` });
+    }
+
+    if (!planet.image_url) {
+      return res
+        .status(404)
+        .json({ error: `Image not found for planet '${name}'` });
+    }
+
+    res.json({ name: planet.name, image_url: planet.image_url });
+  } catch (error) {
+    console.error("Error fetching planet image:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // GET /api/planets/:name — Fetch a planet by name (first letter uppercase)
 router.get("/:name", async (req, res) => {
   try {
