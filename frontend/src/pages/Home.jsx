@@ -120,7 +120,7 @@ const Home = () => {
       <section className="py-16 sm:py-24 px-6 sm:px-8 lg:px-12">
         <div className="max-w-[1200px] mx-auto">
           <motion.div
-            className="text-center mb-12"
+            className="text-center mb-20"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 1 }}

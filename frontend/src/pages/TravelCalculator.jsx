@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
@@ -20,6 +20,42 @@ const TravelCalculator = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [originImage, setOriginImage] = useState(null);
+  const [destinationImage, setDestinationImage] = useState(null);
+
+  // Fetch planet image
+  const fetchPlanetImage = async (planetName) => {
+    if (!planetName) return null;
+    try {
+      const response = await fetch(
+        `${API_URL}/planets/${planetName.toLowerCase()}/image`,
+      );
+      if (!response.ok) return null;
+      const data = await response.json();
+      return data.image_url;
+    } catch (err) {
+      console.error(`Failed to fetch image for ${planetName}:`, err);
+      return null;
+    }
+  };
+
+  // Fetch origin planet image
+  useEffect(() => {
+    if (origin) {
+      fetchPlanetImage(origin).then(setOriginImage);
+    } else {
+      setOriginImage(null);
+    }
+  }, [origin]);
+
+  // Fetch destination planet image
+  useEffect(() => {
+    if (destination) {
+      fetchPlanetImage(destination).then(setDestinationImage);
+    } else {
+      setDestinationImage(null);
+    }
+  }, [destination]);
 
   const handleCalculate = async () => {
     if (!origin || !destination) {
@@ -139,8 +175,12 @@ const TravelCalculator = () => {
             <div className="flex justify-center mb-6">
               <button
                 onClick={() => {
+                  const tempOrigin = origin;
+                  const tempOriginImage = originImage;
                   setOrigin(destination);
-                  setDestination(origin);
+                  setOriginImage(destinationImage);
+                  setDestination(tempOrigin);
+                  setDestinationImage(tempOriginImage);
                 }}
                 className="bg-white/5 hover:bg-white/10 border rounded-full w-10 h-10 flex items-center justify-center transition-all cursor-pointer"
                 style={{
@@ -154,6 +194,54 @@ const TravelCalculator = () => {
                 />
               </button>
             </div>
+
+            {/* Planet Images */}
+            {(originImage || destinationImage) && (
+              <motion.div
+                className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Origin Image */}
+                {originImage && (
+                  <div className="relative overflow-hidden rounded-lg aspect-square bg-white/5 border border-white/10">
+                    <img
+                      src={originImage}
+                      alt={origin}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                      <p className="text-white font-[Orbitron] text-sm font-semibold">
+                        {origin}
+                      </p>
+                      <p className="text-white/50 font-[Inter] text-xs">
+                        Origin
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {/* Destination Image */}
+                {destinationImage && (
+                  <div className="relative overflow-hidden rounded-lg aspect-square bg-white/5 border border-white/10">
+                    <img
+                      src={destinationImage}
+                      alt={destination}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                      <p className="text-white font-[Orbitron] text-sm font-semibold">
+                        {destination}
+                      </p>
+                      <p className="text-white/50 font-[Inter] text-xs">
+                        Destination
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            )}
 
             {/* Calculate button */}
             <button
