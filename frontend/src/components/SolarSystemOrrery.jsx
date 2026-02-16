@@ -86,7 +86,7 @@ const SolarSystemOrrery = () => {
             <div
               style={{
                 position: "absolute",
-                left: orbitRadiusPx,
+                left: orbitRadiusPx - planet.size / 2,
                 top: -planet.size / 2,
                 width: planet.size,
                 height: planet.size,
