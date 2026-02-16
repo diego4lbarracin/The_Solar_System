@@ -20,7 +20,7 @@ const Footer = () => {
               <i className="fab fa-linkedin" />
             </a>
             <a
-              href="https://github.com/diego4lbarracin"
+              href="https://github.com/diego4lbarracin/The_Solar_System"
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors text-2xl no-underline"
