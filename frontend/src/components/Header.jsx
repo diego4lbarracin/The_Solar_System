@@ -29,14 +29,17 @@ const Header = () => {
               <NavLink
                 key={link.to}
                 to={link.to}
-                className={({ isActive }) =>
-                  `font-[Inter] text-base transition-colors no-underline ${
-                    isActive ? "opacity-100" : "opacity-70 hover:opacity-100"
-                  }`
-                }
+                className="font-[Inter] text-base transition-colors no-underline"
                 style={({ isActive }) => ({
                   color: isActive ? "#fbbf24" : "#ffffff",
                 })}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#fbbf24")}
+                onMouseLeave={(e) => {
+                  const isActive = window.location.pathname === link.to;
+                  e.currentTarget.style.color = isActive
+                    ? "#fbbf24"
+                    : "#ffffff";
+                }}
               >
                 {link.label}
               </NavLink>
@@ -72,16 +75,19 @@ const Header = () => {
                     key={link.to}
                     to={link.to}
                     onClick={() => setMenuOpen(false)}
-                    className={({ isActive }) =>
-                      `font-[Inter] text-base transition-colors no-underline ${
-                        isActive
-                          ? "opacity-100"
-                          : "opacity-70 hover:opacity-100"
-                      }`
-                    }
+                    className="font-[Inter] text-base transition-colors no-underline"
                     style={({ isActive }) => ({
                       color: isActive ? "#fbbf24" : "#ffffff",
                     })}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.color = "#fbbf24")
+                    }
+                    onMouseLeave={(e) => {
+                      const isActive = window.location.pathname === link.to;
+                      e.currentTarget.style.color = isActive
+                        ? "#fbbf24"
+                        : "#ffffff";
+                    }}
                   >
                     {link.label}
                   </NavLink>

@@ -104,7 +104,7 @@ const Planets = () => {
             The Planets
           </h1>
           <p
-            className="font-[Inter] text-sm mt-3"
+            className="font-[Inter] text-base sm:text-lg mt-3"
             style={{ color: "rgba(255, 255, 255, 0.5)" }}
           >
             Explore each planet in our Solar System

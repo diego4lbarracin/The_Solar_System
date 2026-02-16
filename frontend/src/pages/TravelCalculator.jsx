@@ -104,7 +104,7 @@ const TravelCalculator = () => {
             to travel to …?
           </h1>
           <p
-            className="font-[Inter] text-sm mt-4 max-w-lg mx-auto"
+            className="font-[Inter] text-base sm:text-lg mt-4 max-w-lg mx-auto"
             style={{ color: "rgba(255, 255, 255, 0.5)" }}
           >
             Select an origin and destination planet to calculate the travel time

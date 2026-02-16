@@ -1,17 +1,47 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const PLANETS = [
-  { name: "Mercury", color: "#b5b5b5", size: 32, orbitRadius: 16 },
-  { name: "Venus", color: "#e8cda0", size: 36, orbitRadius: 26 },
-  { name: "Earth", color: "#4da6ff", size: 38, orbitRadius: 38 },
-  { name: "Mars", color: "#e07a5f", size: 33, orbitRadius: 50 },
-  { name: "Jupiter", color: "#d4a56a", size: 56, orbitRadius: 64 },
-  { name: "Saturn", color: "#e8d5a3", size: 50, orbitRadius: 78 },
-  { name: "Uranus", color: "#7ec8e3", size: 42, orbitRadius: 92 },
-  { name: "Neptune", color: "#4a6fa5", size: 42, orbitRadius: 106 },
+  { name: "Mercury", color: "#b5b5b5", size: 40, orbitRadius: 16 },
+  { name: "Venus", color: "#e8cda0", size: 46, orbitRadius: 26 },
+  { name: "Earth", color: "#4da6ff", size: 48, orbitRadius: 38 },
+  { name: "Mars", color: "#e07a5f", size: 42, orbitRadius: 50 },
+  { name: "Jupiter", color: "#d4a56a", size: 70, orbitRadius: 64 },
+  { name: "Saturn", color: "#e8d5a3", size: 64, orbitRadius: 78 },
+  { name: "Uranus", color: "#7ec8e3", size: 52, orbitRadius: 92 },
+  { name: "Neptune", color: "#4a6fa5", size: 52, orbitRadius: 106 },
 ];
 
 const SolarSystemOrrery = () => {
+  const [planetImages, setPlanetImages] = useState({});
+
+  useEffect(() => {
+    // Fetch images for all planets
+    const fetchImages = async () => {
+      const images = {};
+      for (const planet of PLANETS) {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_API_URL}/planets/${planet.name.toLowerCase()}/image`,
+          );
+          if (response.ok) {
+            const data = await response.json();
+            images[planet.name] = data.image_url;
+          } else {
+            console.warn(
+              `Failed to fetch image for ${planet.name}: ${response.status}`,
+            );
+          }
+        } catch (error) {
+          console.error(`Failed to fetch image for ${planet.name}:`, error);
+        }
+      }
+      setPlanetImages(images);
+    };
+
+    fetchImages();
+  }, []);
+
   return (
     <div className="orrery-container">
       {/* Sun */}
@@ -90,9 +120,12 @@ const SolarSystemOrrery = () => {
                 top: -planet.size / 2,
                 width: planet.size,
                 height: planet.size,
-                background: `radial-gradient(circle at 30% 30%, ${planet.color}, ${planet.color}88)`,
+                background: planetImages[planet.name]
+                  ? `url(${planetImages[planet.name]}) center/cover`
+                  : `radial-gradient(circle at 30% 30%, ${planet.color}, ${planet.color}88)`,
                 borderRadius: "50%",
                 boxShadow: `0 0 ${planet.size}px 2px ${planet.color}44`,
+                overflow: "hidden",
               }}
             />
             {/* Planet label */}
